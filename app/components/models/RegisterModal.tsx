@@ -15,6 +15,7 @@ import Input from '../Inputs/Input';
 import { isAbsoluteUrl } from 'next/dist/shared/lib/utils';
 import { toast } from 'react-hot-toast';
 import Button from '../Button';
+import { signIn } from 'next-auth/react';
 const RegisterModal= ()=>{
     const registerModal = useRegisterModal();
     const [isLoading, setIsLoading] =useState(false);
@@ -40,7 +41,7 @@ const RegisterModal= ()=>{
             registerModal.onClose();
         })
         .catch((error)=>{
-          toast.error("Something went wrong");
+          toast.error(`${error}`);
         })
         .finally(()=>{
             setIsLoading(false);
@@ -49,7 +50,7 @@ const RegisterModal= ()=>{
     const bodyContent =(
         <div className="flex flex-col gap-4">
            <Heading
-           title="welcome to airbnb"
+           title="Welcome"
            subtitle="Create an account!"
            center/>
 
@@ -85,13 +86,14 @@ const RegisterModal= ()=>{
           outline
           label ="continue with Google"
           icon={FcGoogle}
-          onClick={()=>{}}
+          onClick={()=>signIn('google')}
           />
           <Button
           outline
           label="continue with Github"
           icon={AiFillGithub}
-          onClick={()=>{}}
+          onClick={()=>signIn('github')}
+        
           />
           <div className="
             text-neutral-500
