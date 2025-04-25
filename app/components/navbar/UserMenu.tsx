@@ -5,9 +5,11 @@ import {useCallback, useState} from 'react';
 import MenuItem from "./MenuItem";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
+import useRentModel from "@/app/hooks/useRentModel";
 import {signOut} from 'next-auth/react';
 // import { SafeUser } from "@/app/types";
 import { User } from '@prisma/client';
+
 interface UserMenuProps{
     // currentUser? : SafeUser | null
     currentUser? : User | null
@@ -17,6 +19,7 @@ const UserMenu: React.FC<UserMenuProps>=({
 })=>{
     const registerModal= useRegisterModal();
     const LoginModal =useLoginModal();
+    const rentModal = useRentModel();
     const [isOpen, setisOpen] = useState(false);
     const toggleOpen= useCallback(
       () => {
@@ -28,12 +31,22 @@ const UserMenu: React.FC<UserMenuProps>=({
 
     console.log(currentUser);
     
+    const onRent = useCallback(
+      () => {
+        if(!currentUser){
+            return LoginModal.onOpen();
+        }
+        //open Rent Modal
+        rentModal.onOpen();
+      },
+      [currentUser,LoginModal,rentModal],
+    )
     
     return(
         <div className="relative">
             <div className="flex flex-row items-center gap-3">
                 <div
-                onClick={()=>{}}
+                onClick={onRent}
                 className="hidden
                 md:block
                 text-sm
@@ -44,7 +57,7 @@ const UserMenu: React.FC<UserMenuProps>=({
                 hover:bg-neutral-100
                 transition
                 cursor-pointer">
-                        Airbnb your home
+                        CozyHut your home
                 </div>
                 <div onClick={toggleOpen}
                 className="
@@ -103,8 +116,8 @@ const UserMenu: React.FC<UserMenuProps>=({
                                   label="My Properties"
                                   />
                                    <MenuItem
-                                  onClick={()=>{}}
-                                  label="Home"
+                                  onClick={rentModal.onOpen}
+                                  label="CozyHut your Home"
                                   />
                                   <hr/>
                                   <MenuItem
