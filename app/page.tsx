@@ -1,9 +1,23 @@
-import Image from "next/image";
+import getListings from "./actions/getListings";
+import ListingCard from "./components/listings/ListingCard";
 import ClientOnly from "./components/ClientOnly";
 import Container from "./components/Container";
-export default function Home() {
+import EmptyState from "./components/EmptyState";
+import getCurrentUser from "./actions/getCurrentUser";
 
+export default async function Home() {
+const listings= await getListings();  
+const currentUser = await getCurrentUser();
+const isEmpty=true;
+if(listings.length === 0){
+  return(
+    <ClientOnly>
+      <EmptyState showReset/>
+    </ClientOnly>
+  )
+}
   return (
+
     <ClientOnly>
       <Container>
         <div className="
@@ -17,7 +31,15 @@ export default function Home() {
         2xl:grid-cols-6
         gap-8
         ">
-          <div>My future listings</div>
+         {listings.map((listing:any)=>{
+          return(
+            <ListingCard
+            currentUser={currentUser}
+            key={listing.id}
+            data={listing}
+            />
+          )
+         })}
         </div>
       </Container>
     </ClientOnly>
