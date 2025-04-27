@@ -46,6 +46,7 @@ const ListingClient:React.FC<ListingClientProps>=({
         });
         return dates;
     }, [reservations]);
+    console.log("DISABLED DATES:", disabledDates);
 
     const [isLoading, setIsLoading] = useState(false);
     const [totalPrice, setTotalPrice] = useState(listing.price);
@@ -57,6 +58,18 @@ const ListingClient:React.FC<ListingClientProps>=({
         }
         setIsLoading(true);
 
+
+        if (!dateRange.startDate || !dateRange.endDate) {
+            toast.error('Please select valid start and end dates.');
+            setIsLoading(false);
+            return;
+        }
+
+        const startDateUTC = new Date(dateRange.startDate).toISOString();
+        const endDateUTC = new Date(dateRange.endDate).toISOString();
+
+
+        
         axios.post('/api/reservations',{
             totalPrice,
             startDate:dateRange.startDate,
