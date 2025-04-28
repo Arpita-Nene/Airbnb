@@ -1,6 +1,4 @@
 import prisma from "@/app/libs/prismadb";
-import { Stringifiable } from "query-string";
-import { useId } from "react";
 interface IParams{
     listingId?:string;
     userId?:string;
@@ -34,6 +32,8 @@ export default async function getReservations(
 
         });
         return reservations;
+
+      
 }
 catch(error:any){
     throw new Error(error);

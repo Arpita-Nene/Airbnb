@@ -7,6 +7,7 @@ export default async function getListings(){
             }
         });
         return listings;
+        // const safeListings
     }
     catch(error:any){
         throw new Error(error);

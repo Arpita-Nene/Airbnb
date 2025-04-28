@@ -36,7 +36,7 @@ export async function POST(
         },
         include: {
             reservations: true 
-        }
+        },
     });
     return NextResponse.json(listingAndReservation);
 }
